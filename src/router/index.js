@@ -8,6 +8,10 @@ export default new Router({
     routes: [
         {
             path: '/',
+            redirect: loginView
+        },
+        {
+            path: '/login',
             name: 'loginView',
             component: loginView
         }

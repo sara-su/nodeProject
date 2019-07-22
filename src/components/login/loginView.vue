@@ -1,6 +1,6 @@
 <template>
     <div class="login_background">
-        <div class="input_body">
+        <div class="input_body" :class="selectModule==='login'?'login_body':'register_body'">
             <div class="input_header">
                 <div class="header_button" :class="selectModule === 'login'?'fontColor_selected':''" @click="changeModule('login')">登陆</div>
                 <div class="header_button" :class="selectModule === 'register'?'fontColor_selected':''" @click="changeModule('register')">注册</div>
@@ -9,7 +9,14 @@
                     <div class="select_button" :class="selectModule === 'register'?'background_slected':''"></div>
                 </div>
             </div>
-            <loginInput></loginInput>
+            <!-- 登录和注册输入模块 -->
+            <loginInput v-if="selectModule==='login'" ref="loginInput"></loginInput>
+            <registerInput v-else ref="registerInput"></registerInput>
+            <!-- 底部按钮 -->
+            <div class="input_footer">
+                <div class="footer_button" @click="submitInput">确定</div>
+                <div class="footer_button" @click="cancelInput">取消</div>
+            </div>
         </div>
     </div>
 </template>
@@ -87,6 +94,20 @@ export default {
                 return
             }
             this.selectModule = module
+        },
+        submitInput: function() {
+            if (this.selectModule === 'login') {
+                this.$refs.loginInput.submitInput()
+            } else {
+                this.$refs.registerInput.submitInput()
+            }
+        },
+        cancelInput: function() {
+            if (this.selectModule === 'login') {
+                this.$refs.loginInput.cancelInput()
+            } else {
+                this.$refs.registerInput.cancelInput()
+            }
         }
     }
 }
@@ -97,19 +118,25 @@ export default {
 .login_background{
     width: 100%;
     height: 100%;
-    background: url(../../assets/img/login/background.jpg);
+    background: url(../../assets/img/login/home.jpg);
     background-size: 100%;
     position: relative;
 }
 .input_body {
     width: 400px;
-    height: 420px;
     border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 5px #aeaeae;
+    background-color: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.login_body{
+    height: 380px;
+}
+.register_body{
+    height: 470px;
 }
 .input_header {
     width: 100%;
@@ -121,7 +148,7 @@ export default {
     width: 50%;
     border: none;
     text-align: center;
-    color: #acacac;
+    color: #565656;
     line-height: 60px;
     font-size: 20px;
     cursor: pointer;
@@ -141,9 +168,28 @@ export default {
     float: left;
 }
 .fontColor_selected{
-    color: #232446;
+    color: #007dff;
 }
 .background_slected{
-    background-color: #232446;
+    background-color: #007dff;
+}
+.input_footer{
+    width: 250px;
+    height: 35px;
+    margin: 0 auto;
+}
+.footer_button{
+    width: 85px;
+    height: 100%;
+    background-color: #007dff;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 35px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+.footer_button:first-child {
+    margin-right: 75px;
 }
 </style>
